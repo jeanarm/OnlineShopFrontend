@@ -11,7 +11,7 @@ const [userDeleted, setUserDeleted] = useState(false)
   const deleteHandler = async(userId) => {
     if (window.confirm("Are you sure?")) {
       const data = await deleteUser(userId)
-      if(data == 'User deleted'){
+      if(data === 'User deleted'){
         setUserDeleted(!userDeleted)
       }
 
@@ -21,7 +21,7 @@ const [userDeleted, setUserDeleted] = useState(false)
   useEffect(() => {
     const abctrl = new AbortController()
     fetchUsers(abctrl)
-    .then((res) => setUsers(res.data))
+    .then((res) => setUsers(res))
     .catch((er)=>{
       console.log(er.response.data.message?er.response.data.message : er.response.data)
     })
