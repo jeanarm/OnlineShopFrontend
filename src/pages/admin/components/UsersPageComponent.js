@@ -2,31 +2,28 @@ import { Row, Col, Table, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import AdminLinksComponent from "../../../components/admin/AdminLinksComponent";
 
-import {useState,useEffect} from "react";
+import { useState, useEffect } from "react";
 
-
-
-const UsersPageComponent = ({fetchUsers}) => {
-  const [users,setUsers] =useState([])
-  
+const UsersPageComponent = ({ fetchUsers }) => {
+  const [users, setUsers] = useState([]);
 
   const deleteHandler = () => {
+    if (window.confirm("Are you sure?")) alert("User deleted!");
+  };
 
-    if(window.confirm("Are you sure?")) alert("User deleted!");
-}
-
-useEffect(()=>{
-  fetchUsers().then(res=> setUsers(res));
-},[])
+  useEffect(() => {
+    const abctrl = new AbortController()
+    fetchUsers(abctrl).then((res) => setUsers(res));
+    return () =>abctrl.abort()
+  }, []);
 
   return (
     <Row className="m-5">
-        <Col md={2}>
+      <Col md={2}>
         <AdminLinksComponent />
-        </Col>
+      </Col>
       <Col md={10}>
         <h1>User List </h1>
-        {console.log(users)}
         <Table striped bordered hover responsive>
           <thead>
             <tr>
@@ -42,7 +39,7 @@ useEffect(()=>{
             {["bi bi-check-lg text-success", "bi bi-x-lg text-danger"].map(
               (item, idx) => (
                 <tr key={idx}>
-                  <td>{idx +1}</td>
+                  <td>{idx + 1}</td>
                   <td>Armel</td>
                   <td>Niz</td>
                   <td>armel@email.com</td>
@@ -51,13 +48,17 @@ useEffect(()=>{
                   </td>
                   <td>
                     <LinkContainer to="admin/edit-user">
-                        <Button className="btn-sm">
-                            <i className="bi bi-pencil-square"></i>
-                        </Button>
+                      <Button className="btn-sm">
+                        <i className="bi bi-pencil-square"></i>
+                      </Button>
                     </LinkContainer>
                     {" / "}
-                    <Button variant="danger" className="btn-sm" onClick={deleteHandler}>
-                        <i className="bi bi-x-circle"></i>
+                    <Button
+                      variant="danger"
+                      className="btn-sm"
+                      onClick={deleteHandler}
+                    >
+                      <i className="bi bi-x-circle"></i>
                     </Button>
                   </td>
                 </tr>
@@ -70,5 +71,4 @@ useEffect(()=>{
   );
 };
 
-export default UsersPageComponent ;
-
+export default UsersPageComponent;
