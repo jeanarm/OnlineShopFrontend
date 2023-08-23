@@ -13,7 +13,12 @@ const UsersPageComponent = ({ fetchUsers }) => {
 
   useEffect(() => {
     const abctrl = new AbortController()
-    fetchUsers(abctrl).then((res) => setUsers(res));
+    fetchUsers(abctrl)
+    .then((res) => setUsers(res.data))
+    .catch((er)=>{
+      console.log(er.response.data.message?er.response.data.message : er.response.data)
+    })
+    
     return () =>abctrl.abort()
   }, []);
 
@@ -36,18 +41,22 @@ const UsersPageComponent = ({ fetchUsers }) => {
             </tr>
           </thead>
           <tbody>
-            {["bi bi-check-lg text-success", "bi bi-x-lg text-danger"].map(
-              (item, idx) => (
+            {users.map(
+              (user, idx) => (
                 <tr key={idx}>
                   <td>{idx + 1}</td>
-                  <td>Armel</td>
-                  <td>Niz</td>
-                  <td>armel@email.com</td>
+                  <td>{user.name}</td>
+                  <td>{user.lastName}</td>
+                  <td>{user.email}</td>
                   <td>
-                    <i className={item}></i>
+                  
+                {  user.isAdmin? <i className="bi bi-check-lg text-success"></i>
+                  :
+                  <i className="bi bi-x-lg text-danger"></i>
+                  }
                   </td>
                   <td>
-                    <LinkContainer to="admin/edit-user">
+                  <LinkContainer to="`admin/edit-user/{user._id}`">
                       <Button className="btn-sm">
                         <i className="bi bi-pencil-square"></i>
                       </Button>
