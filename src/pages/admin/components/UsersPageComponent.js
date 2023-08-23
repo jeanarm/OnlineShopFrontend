@@ -2,18 +2,31 @@ import { Row, Col, Table, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import AdminLinksComponent from "../../../components/admin/AdminLinksComponent";
 
-const deleteHandler = () => {
+import {useState,useEffect} from "react";
+
+
+
+const UsersPageComponent = ({fetchUsers}) => {
+  const [users,setUsers] =useState([])
+  
+
+  const deleteHandler = () => {
+
     if(window.confirm("Are you sure?")) alert("User deleted!");
 }
 
-const UsersPageComponent = () => {
+useEffect(()=>{
+  fetchUsers().then(res=> setUsers(res));
+},[])
+
   return (
     <Row className="m-5">
         <Col md={2}>
         <AdminLinksComponent />
         </Col>
       <Col md={10}>
-        <h1>User List</h1>
+        <h1>User List </h1>
+        {console.log(users)}
         <Table striped bordered hover responsive>
           <thead>
             <tr>
