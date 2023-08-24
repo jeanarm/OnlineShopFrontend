@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 const OrdersPageComponent = ({ fetchOrders }) => {
   const [orders, setOrders] = useState([]);
-
+  
   useEffect(() => {
     const abctrl = new AbortController();
 
@@ -61,7 +61,7 @@ const OrdersPageComponent = ({ fetchOrders }) => {
                 <td>{order.paymentMethod} </td>
 
                 <td>
-                  <Link to={`/admin/order-details/{order._id}`}>
+                  <Link to={`/admin/order-details/${order._id}`}>
                     go to order
                   </Link>
                 </td>
