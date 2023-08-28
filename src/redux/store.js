@@ -1,4 +1,5 @@
 import {createStore} from 'redux'
+import {composeWithDevTools} from 'redux-devtools-extension'
 
 const counterReducer = (state ={value:0},action) =>{
      switch(action.type){
@@ -12,14 +13,14 @@ const counterReducer = (state ={value:0},action) =>{
 }
 
 
-const store = createStore(counterReducer)
+const store = createStore(counterReducer,composeWithDevTools())
 
 store.dispatch({
     type:'ADD',
     someValue:10
 
 })
-console.log(store.getState())
+
 
 export default store;
 
