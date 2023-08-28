@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 
-const LoginPageComponent = ({ loginUserApiRequest }) => {
+const LoginPageComponent = ({ loginUserApiRequest,reduxDispatch,setReduxUserState }) => {
   const [validated, setValidated] = useState(false);
   const [loginUserResponseState, setLoginUserResponseState] = useState({
     success: "",
@@ -19,18 +19,22 @@ const LoginPageComponent = ({ loginUserApiRequest }) => {
 
     const email = form.email.value;
     const password = form.password.value;
-    const doNotLogOut = form.doNotLogOut.checked;
+    const doNotLogout = form.doNotLogout.checked;
 
     if (event.currentTarget.checkValidity() === true && email && password) {
       setLoginUserResponseState({ loading: true });
 
-      loginUserApiRequest(email, password, doNotLogOut)
+      loginUserApiRequest(email, password, doNotLogout)
         .then((res) => {
           setLoginUserResponseState({
             success: res.success,
             loading: false,
             error: "",
           });
+        if(res.loggedInUser){
+            reduxDispatch(setReduxUserState(res.loggedInUser))
+        }
+
           if (res.success === "user logged in" && !res.loggedInUser.isAdmin) {
             navigate("/user", { replace: true });
           } else navigate("/admin/orders", { replace: true });
@@ -73,7 +77,7 @@ const LoginPageComponent = ({ loginUserApiRequest }) => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicCheckbox">
               <Form.Check
-                name="doNotLogOut"
+                name="doNotLogout"
                 type="checkbox"
                 label="Do not logout"
               />
