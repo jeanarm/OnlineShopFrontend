@@ -37,7 +37,6 @@ const OrderDetailsPageComponent = ({ getOrder, markAsDelivered }) => {
       setCartItems(order.cartItems);
     });
   }, [isDelivered, id]);
-  console.log(userInfo);
   return (
     <Container fluid>
       <Row className="mt-4">
