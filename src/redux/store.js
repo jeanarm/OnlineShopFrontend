@@ -10,7 +10,6 @@ const reducer = combineReducers({
 
 const middleware =[thunk]
 
-
 const store = createStore(reducer,{cart:{value:0}},composeWithDevTools(applyMiddleware(...middleware)))
 
 
