@@ -3,8 +3,12 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 import AdminLinksComponent from "../../../components/admin/AdminLinksComponent";
 import { useState,useEffect } from "react";
-const ProductsPageComponent = ({fetchProducts,deleteProduct}) => {
+import { logout } from "../../../redux/actions/userActions";
+import { useDispatch } from "react-redux";
 
+
+const ProductsPageComponent = ({fetchProducts,deleteProduct}) => {
+    const dispatch =useDispatch()
     const [products,setProducts] =useState([])
     const [deletedProduct,setDeletedProduct] = useState(false)
 
@@ -25,7 +29,7 @@ const ProductsPageComponent = ({fetchProducts,deleteProduct}) => {
            setProducts(res) 
         })
         .catch((er)=>{
-            console.log(er.response.data.message?er.response.data.message : er.response.data)
+            dispatch(logout())
           })
           
           return () =>abctrl.abort()   

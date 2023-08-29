@@ -3,7 +3,12 @@ import { Link } from "react-router-dom";
 import AdminLinksComponent from "../../../components/admin/AdminLinksComponent";
 import { useState, useEffect } from "react";
 
+import { logout } from "../../../redux/actions/userActions";
+import { useDispatch } from "react-redux";
+
+
 const OrdersPageComponent = ({ fetchOrders }) => {
+  const dispatch =useDispatch()
   const [orders, setOrders] = useState([]);
   
   useEffect(() => {
@@ -12,9 +17,8 @@ const OrdersPageComponent = ({ fetchOrders }) => {
     fetchOrders(abctrl)
       .then((res) => setOrders(res))
       .catch((er) => {
-        console.log(
-          er.response.data.message ? er.response.data.message : er.response.data
-        );
+        dispatch(logout())
+       
       });
   }, []);
 

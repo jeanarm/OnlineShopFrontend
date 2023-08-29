@@ -1,4 +1,4 @@
-import { LOGIN_USER } from "../constants/userContants"
+import { LOGIN_USER,LOGOUT_USER } from "../constants/userContants"
 
 export const userRegisterLoginReducer = (state ={},action)=>{
     switch(action.type){
@@ -7,7 +7,9 @@ export const userRegisterLoginReducer = (state ={},action)=>{
                 ...state,
                 userInfo:action.payload
             }
-            default:
+        case LOGOUT_USER:
+            return {}
+        default:
                 return state
     }
 }

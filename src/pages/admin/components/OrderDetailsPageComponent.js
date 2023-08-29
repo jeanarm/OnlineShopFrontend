@@ -10,6 +10,12 @@ import {
 import CartItemComponent from "../../../components/CartItemComponent";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+
+import { logout } from "../../../redux/actions/userActions";
+import { useDispatch } from "react-redux";
+
+
+
 const OrderDetailsPageComponent = ({ getOrder, markAsDelivered }) => {
   const { id } = useParams();
   const [userInfo, setUserInfo] = useState([]);
@@ -21,22 +27,29 @@ const OrderDetailsPageComponent = ({ getOrder, markAsDelivered }) => {
   const [orderButtonMessage, setOrderButtonMessage] =
     useState("Mark as Delivered");
   const [cartItems, setCartItems] = useState([]);
+
+  const dispatch = useDispatch()
   useEffect(() => {
-    getOrder(id).then((order) => {
-      setUserInfo(order.user);
-      setPaymentMethod(order.paymentMethod);
-      order.isPaid ? setIsPaid(order.paidAt) : setIsPaid(false);
-      order.isDelivered
-        ? setIsDelivered(order.deliveredAt)
-        : setIsDelivered(false);
-      setCartSubtotal(order.orderTotal.cartSubtotal);
-      if (order.isDelivered) {
-        setOrderButtonMessage("Order is Completed");
-        setButtonDisabled(true);
-      }
-      setCartItems(order.cartItems);
-    });
+    getOrder(id)
+      .then((order) => {
+        setUserInfo(order.user);
+        setPaymentMethod(order.paymentMethod);
+        order.isPaid ? setIsPaid(order.paidAt) : setIsPaid(false);
+        order.isDelivered
+          ? setIsDelivered(order.deliveredAt)
+          : setIsDelivered(false);
+        setCartSubtotal(order.orderTotal.cartSubtotal);
+        if (order.isDelivered) {
+          setOrderButtonMessage("Order is Completed");
+          setButtonDisabled(true);
+        }
+        setCartItems(order.cartItems);
+      })
+      .catch((err) => {
+        dispatch(logout());
+      });
   }, [isDelivered, id]);
+  
   return (
     <Container fluid>
       <Row className="mt-4">
