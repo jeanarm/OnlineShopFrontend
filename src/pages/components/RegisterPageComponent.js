@@ -10,13 +10,15 @@ const RegisterPageComponent = ({registerUserApiRequest,reduxDispatch,setReduxUse
     success:"",error:"",loading:false
   })
 
+  const [passwordsMatchState,setPassswordsMatchState] = useState(true)
+
   const onChange = () => {
     const password = document.querySelector("input[name=password]");
-    const confirm = document.querySelector("input[name=confirmPassword]");
-    if (confirm.value === password.value) {
-      confirm.setCustomValidity("");
+    const confirmPassword = document.querySelector("input[name=confirmPassword]");
+    if (confirmPassword.value === password.value) {
+      setPassswordsMatchState(true)
     } else {
-      confirm.setCustomValidity("Passwords do not match");
+      setPassswordsMatchState(false)
     }
   };
 
@@ -35,8 +37,6 @@ const RegisterPageComponent = ({registerUserApiRequest,reduxDispatch,setReduxUse
         .then((data)=>{
             setRegisterUserResponseState({success:data.success,loading:false})
             reduxDispatch(setReduxUserState(data.createdUser))
-            sessionStorage.setItem("userInfo",JSON.stringify(data.createdUser))
-            if(data.success === "User created") window.location.href="/user"
         })
         .catch((er)=>setRegisterUserResponseState({
             error:er.response.data.message? er.response.data.message:er.response.data
@@ -96,6 +96,7 @@ const RegisterPageComponent = ({registerUserApiRequest,reduxDispatch,setReduxUse
                 placeholder="Password"
                 minLength={6}
                 onChange={onChange}
+                isInvalid ={!passwordsMatchState}
               />
               <Form.Control.Feedback type="invalid">
                 Please anter a valid password
@@ -113,6 +114,7 @@ const RegisterPageComponent = ({registerUserApiRequest,reduxDispatch,setReduxUse
                 placeholder="Repeat Password"
                 minLength={6}
                 onChange={onChange}
+                isInvalid ={!passwordsMatchState}
               />
               <Form.Control.Feedback type="invalid">
                 Both passwords should match
